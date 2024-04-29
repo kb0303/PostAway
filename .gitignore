@@ -1,1 +1,13 @@
-/node_modules
+# Ignore node_modules directory
+node_modules/
+
+# Ignore node_modules directory
+uploads/*
+
+# Ignore .env files
+*.env
+
+# Ignore compiled binaries
+*.exe
+*.dll
+.vercel
