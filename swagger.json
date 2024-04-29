@@ -1,0 +1,415 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Post Away API",
+		"description": "API for managing posts, users, comments, and likes",
+		"version": "1.0.0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3001/api"
+		}
+	],
+	"paths": {
+		"/user/signup": {
+			"post": {
+				"summary": "Sign up a new user",
+				"operationId": "signUpUser",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserSignUp"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "User signed up successfully"
+					},
+					"400": {
+						"description": "Invalid request body"
+					}
+				}
+			}
+		},
+		"/user/signin": {
+			"post": {
+				"summary": "Sign in an existing user",
+				"operationId": "signInUser",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserSignIn"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "User signed in successfully"
+					},
+					"400": {
+						"description": "Invalid credentials"
+					}
+				}
+			}
+		},
+		"/posts": {
+			"get": {
+				"summary": "Get all posts",
+				"operationId": "getAllPosts",
+				"responses": {
+					"200": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/Post"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"summary": "Create a new post",
+				"operationId": "createPost",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NewPost"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Post created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Post"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid request body"
+					}
+				}
+			}
+		},
+		"/posts/{postId}": {
+			"get": {
+				"summary": "Get post by ID",
+				"operationId": "getPostById",
+				"parameters": [
+					{
+						"name": "postId",
+						"in": "path",
+						"description": "ID of the post to retrieve",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Post"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Post not found"
+					}
+				}
+			},
+			"put": {
+				"summary": "Update post by ID",
+				"operationId": "updatePostById",
+				"parameters": [
+					{
+						"name": "postId",
+						"in": "path",
+						"description": "ID of the post to update",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdatePost"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Post updated successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Post"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Post not found"
+					}
+				}
+			},
+			"delete": {
+				"summary": "Delete post by ID",
+				"operationId": "deletePostById",
+				"parameters": [
+					{
+						"name": "postId",
+						"in": "path",
+						"description": "ID of the post to delete",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Post deleted successfully"
+					},
+					"404": {
+						"description": "Post not found"
+					}
+				}
+			}
+		},
+		"/comments/{postId}": {
+			"get": {
+				"summary": "Get comments for a post",
+				"operationId": "getCommentsForPost",
+				"parameters": [
+					{
+						"name": "postId",
+						"in": "path",
+						"description": "ID of the post",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/Comment"
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Post not found"
+					}
+				}
+			},
+			"post": {
+				"summary": "Add a new comment to a post",
+				"operationId": "addCommentToPost",
+				"parameters": [
+					{
+						"name": "postId",
+						"in": "path",
+						"description": "ID of the post",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NewComment"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Comment added successfully"
+					},
+					"400": {
+						"description": "Invalid request body"
+					},
+					"404": {
+						"description": "Post not found"
+					}
+				}
+			}
+		},
+		"/likes/{postId}": {
+			"post": {
+				"summary": "Toggle like status for a post",
+				"operationId": "toggleLikeForPost",
+				"parameters": [
+					{
+						"name": "postId",
+						"in": "path",
+						"description": "ID of the post",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Like status toggled successfully"
+					},
+					"404": {
+						"description": "Post not found"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"UserSignUp": {
+				"type": "object",
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string",
+						"format": "email"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"email",
+					"password"
+				]
+			},
+			"UserSignIn": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"format": "email"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				]
+			},
+			"Post": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer"
+					},
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "integer"
+					}
+				}
+			},
+			"NewPost": {
+				"type": "object",
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title",
+					"content"
+				]
+			},
+			"UpdatePost": {
+				"type": "object",
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					}
+				}
+			},
+			"Comment": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer"
+					},
+					"postId": {
+						"type": "integer"
+					},
+					"userId": {
+						"type": "integer"
+					},
+					"comment": {
+						"type": "string"
+					}
+				}
+			},
+			"NewComment": {
+				"type": "object",
+				"properties": {
+					"comment": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"comment"
+				]
+			}
+		}
+	}
+}
