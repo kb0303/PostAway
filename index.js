@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'
 import jwtAuth from './src/middlewares/jwtAuth.middleware.js';
 import UserRouter from './src/features/user/user.routes.js';
 import PostRouter from './src/features/post/post.routes.js';
@@ -6,6 +7,9 @@ import CommentRouter from './src/features/comment/comment.routes.js';
 import LikeRouter from './src/features/like/like.routes.js';
 
 const server = express();
+
+// CORS Policy Configuration
+server.use(cors());
 
 // Middleware to parse JSON bodies
 server.use(express.json());

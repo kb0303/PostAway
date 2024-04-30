@@ -14,6 +14,9 @@ export default class PostModel {
 		this.userId = userId;
 		this.caption = caption;
 		this.imageUrl = imageUrl;
+		this.bookmarkedBy = [];
+		this.savedBy = [];
+		this.archivedBy = [];
 	}
 
 	/**
@@ -105,14 +108,19 @@ export default class PostModel {
 	}
 
 
-	static filterPostsByCaption(posts, caption) {
+	static filterPostsByCaption(caption) {
 		// Filter posts based on the caption containing the specified string
-		return posts.filter(post => post.caption.includes(caption));
+		const filteredPosts = posts.filter(post => post.caption == caption);
+		if (filteredPosts <= 0) {
+			return "No Post with this caption matched"
+		} else {
+			return filteredPosts;
+		}
 	}
 
 
 	static bookmarkPost(userId, postId) {
-		const post = posts.find(p => p.id === postId);
+		const post = posts.find(p => p.id == postId);
 		if (!post) {
 			return "Post not found";
 		}
@@ -128,7 +136,7 @@ export default class PostModel {
 	}
 
 	static savePost(userId, postId) {
-		const post = posts.find(p => p.id === postId);
+		const post = posts.find(p => p.id == postId);
 		if (!post) {
 			return "Post not found";
 		}
@@ -144,7 +152,7 @@ export default class PostModel {
 	}
 
 	static archivePost(userId, postId) {
-		const post = posts.find(p => p.id === postId);
+		const post = posts.find(p => p.id == postId);
 		if (!post) {
 			return "Post not found";
 		}
@@ -158,8 +166,6 @@ export default class PostModel {
 		post.archivedBy.push(userId);
 		return "Post archived successfully";
 	}
-
-
 
 }
 

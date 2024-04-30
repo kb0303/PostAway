@@ -125,4 +125,52 @@ export default class PostController {
 			res.status(500).json({ success: false, message: "Internal server error" });
 		}
 	}
+
+	filterPostsByCaption(req, res) {
+		try {
+			const caption = req.query.caption;
+
+			const filteredPost = PostModel.filterPostsByCaption(caption);
+
+			res.status(200).json({ success: true, filteredPost });
+		} catch (error) {
+			res.status(500).json({ success: false, message: "Internal server error" });
+		}
+	}
+	bookmarkPost(req, res) {
+		try {
+			const userId = req.userId;
+			const postId = req.params.id;
+
+			const bookMarkStatus = PostModel.bookmarkPost(userId, postId);
+
+			res.status(200).json({ success: true, bookMarkStatus })
+		} catch (error) {
+			res.status(500).json({ success: false, message: "Internal server error" });
+		}
+	}
+	savePost(req, res) {
+		try {
+			const userId = req.userId;
+			const postId = req.params.id;
+
+			const saveStatus = PostModel.savePost(userId, postId);
+
+			res.status(200).json({ success: true, saveStatus })
+		} catch (error) {
+			res.status(500).json({ success: false, message: "Internal server error" });
+		}
+	}
+	archivePost(req, res) {
+		try {
+			const userId = req.userId;
+			const postId = req.params.id;
+
+			const archiveStatus = PostModel.archivePost(userId, postId);
+
+			res.status(200).json({ success: true, archiveStatus })
+		} catch (error) {
+			res.status(500).json({ success: false, message: "Internal server error" });
+		}
+	}
 }

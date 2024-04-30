@@ -18,6 +18,38 @@ const postController = new PostController();
 PostRouter.get('/all', postController.getAllPosts);
 
 /**
+ * Route: Filter post by Caption
+ * Method: GET
+ * Endpoint: /filteredPost
+ * Controller method: filterPostsByCaption
+ */
+PostRouter.get('/filteredPost', postController.filterPostsByCaption);
+
+/**
+ * Route: BookMark a post by ID
+ * Method: POST
+ * Endpoint: /bookmarkPost/:id
+ * Controller method: bookmarkPost
+ */
+PostRouter.post('/bookmarkPost/:id', postController.bookmarkPost);
+
+/**
+ * Route: Save a post by ID
+ * Method: POST
+ * Endpoint: /savePost/:id
+ * Controller method: savePost
+ */
+PostRouter.post('/savePost/:id', postController.savePost);
+
+/**
+ * Route: Archive a post by ID
+ * Method: POST
+ * Endpoint: /archivePost/:id
+ * Controller method: archivePost
+ */
+PostRouter.post('/archivePost/:id', postController.archivePost);
+
+/**
  * Route: Get a single post by ID
  * Method: GET
  * Endpoint: /:id
@@ -58,6 +90,9 @@ PostRouter.post('/', upload.single('imageUrl'), postController.addNewPost);
  * Controller method: updatePost
  */
 PostRouter.put('/', upload.single('imageUrl'), postController.updatePost);
+
+
+
 
 // Export the router
 export default PostRouter;
